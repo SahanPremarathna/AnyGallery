@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Liquid Glass Video Gallery</title>
+  <title>Any Gallery | Anything can become a Gallery</title>
   <style>
     * {
       margin: 0;
@@ -18,6 +18,7 @@
       overflow-x: hidden;
     }
 
+    /* Animated Background */
     .bg-container {
       position: fixed;
       inset: 0;
@@ -55,6 +56,25 @@
       50% { transform: scale(1.1); opacity: 0.4; }
     }
 
+    /* Glass Effects */
+    .glass {
+      background: rgba(20, 20, 20, 0.6);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(220, 38, 38, 0.2);
+    }
+
+    .glass-hover {
+      transition: all 0.3s ease;
+    }
+
+    .glass-hover:hover {
+      background: rgba(30, 30, 30, 0.7);
+      border-color: rgba(220, 38, 38, 0.5);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(220, 38, 38, 0.2);
+    }
+
+    /* Header */
     header {
       position: sticky;
       top: 0;
@@ -72,7 +92,7 @@
 
     .header-top {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
       gap: 20px;
       flex-wrap: wrap;
@@ -90,6 +110,7 @@
       display: flex;
       gap: 12px;
       align-items: center;
+      justify-content: center;
       flex-wrap: wrap;
     }
 
@@ -112,14 +133,9 @@
       backdrop-filter: blur(10px);
     }
 
-    .btn-primary:hover:not(:disabled) {
+    .btn-primary:hover {
       background: rgba(220, 38, 38, 1);
       transform: scale(1.05);
-    }
-
-    .btn-primary:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
     }
 
     .btn-secondary {
@@ -164,6 +180,7 @@
       pointer-events: none;
     }
 
+    /* Categories */
     .categories {
       display: flex;
       gap: 8px;
@@ -201,6 +218,7 @@
       border-color: rgba(220, 38, 38, 1);
     }
 
+    /* Main Content */
     main {
       position: relative;
       z-index: 1;
@@ -313,6 +331,7 @@
       display: inline-block;
     }
 
+    /* Modal */
     .modal {
       display: none;
       position: fixed;
@@ -346,6 +365,7 @@
     .modal-video {
       width: 100%;
       height: auto;
+      min-height: 80vh;
       max-height: 80vh;
       display: block;
     }
@@ -397,7 +417,7 @@
     }
 
     .hidden {
-      display: none !important;
+      display: none;
     }
 
     svg {
@@ -410,87 +430,23 @@
       stroke-linejoin: round;
     }
 
-    .loading-screen {
-      position: fixed;
-      inset: 0;
-      z-index: 300;
-      background: rgba(0, 0, 0, 0.95);
-      backdrop-filter: blur(10px);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      gap: 24px;
-    }
-
-    .loading-screen.active {
-      display: flex;
-    }
-
-    .loading-spinner {
-      width: 80px;
-      height: 80px;
-      border: 4px solid rgba(220, 38, 38, 0.2);
-      border-top-color: #ef4444;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    .loading-text {
-      font-size: 1.2rem;
-      color: #ef4444;
-      text-align: center;
-    }
-
-    .loading-progress {
-      font-size: 2rem;
-      font-weight: bold;
-      color: #fff;
-    }
-
-    .loading-details {
-      font-size: 0.9rem;
-      color: #999;
-    }
-
     @media (max-width: 768px) {
-      h1 { font-size: 1.5rem; }
-      .video-grid { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; }
-      input[type="text"] { width: 200px; }
-      .modal-content.vertical { max-width: 90vw; }
-      .modal-nav { width: 40px; height: 40px; }
-      .modal-nav.prev { left: 10px; }
-      .modal-nav.next { right: 10px; }
-      button { padding: 10px 18px; font-size: 13px; }
-      .empty-card { padding: 40px 20px; }
-    }
+      h1 {
+        font-size: 1.5rem;
+      }
 
-    @media (max-width: 480px) {
-      .header-top { flex-direction: column; align-items: stretch; }
-      .controls { flex-direction: column; }
-      input[type="text"] { width: 100%; }
-      .video-grid { grid-template-columns: 1fr; }
-      h1 { font-size: 1.3rem; text-align: center; }
-    }
+      .video-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 16px;
+      }
 
-    @media (hover: none) {
-      .video-card:hover { transform: none; }
-      .video-card:active { transform: scale(0.98); }
-      .play-overlay { opacity: 1; }
-    }
+      input[type="text"] {
+        width: 200px;
+      }
 
-    * {
-      -webkit-tap-highlight-color: transparent;
-      -webkit-touch-callout: none;
-      user-select: none;
-    }
-
-    input, video {
-      user-select: auto;
+      .modal-content.vertical {
+        max-width: 90vw;
+      }
     }
   </style>
 </head>
@@ -503,7 +459,7 @@
   <header>
     <div class="header-content">
       <div class="header-top">
-        <h1>Video Gallery</h1>
+        <h1>Any Gallery</h1>
         <div class="controls">
           <button id="selectBtn" class="btn-primary">
             <svg viewBox="0 0 24 24"><path d="M3 7v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-6l-2-2H5a2 2 0 0 0-2 2z"></path></svg>
@@ -523,7 +479,7 @@
     </div>
   </header>
 
-  <main>
+  <main id="mainContent">
     <div class="empty-state" id="emptyState">
       <div class="empty-card">
         <svg class="empty-icon" viewBox="0 0 24 24"><path d="M3 7v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-6l-2-2H5a2 2 0 0 0-2 2z"></path></svg>
@@ -555,21 +511,12 @@
     </div>
   </div>
 
-  <div id="loadingScreen" class="loading-screen">
-    <div class="loading-spinner"></div>
-    <div class="loading-text">Scanning Your Videos</div>
-    <div class="loading-progress" id="loadingProgress">0%</div>
-    <div class="loading-details" id="loadingDetails">Preparing...</div>
-  </div>
-
   <script>
     let allVideos = [];
     let categories = [];
     let currentCategory = 'all';
     let currentVideoIndex = 0;
     let filteredVideos = [];
-    let videoCount = 0;
-    let totalVideos = 0;
 
     const elements = {
       selectBtn: document.getElementById('selectBtn'),
@@ -581,10 +528,7 @@
       videoGrid: document.getElementById('videoGrid'),
       modal: document.getElementById('modal'),
       modalContent: document.getElementById('modalContent'),
-      modalVideo: document.getElementById('modalVideo'),
-      loadingScreen: document.getElementById('loadingScreen'),
-      loadingProgress: document.getElementById('loadingProgress'),
-      loadingDetails: document.getElementById('loadingDetails')
+      modalVideo: document.getElementById('modalVideo')
     };
 
     elements.selectBtn.addEventListener('click', selectFolder);
@@ -594,119 +538,76 @@
       if (e.target === elements.modal) closeModal();
     });
 
-    const isFileSystemSupported = 'showDirectoryPicker' in window;
-
-    if (!isFileSystemSupported) {
-      elements.selectBtn.textContent = 'Not Supported';
-      elements.selectBtn.disabled = true;
-      document.querySelector('.empty-card p').textContent = 
-        'Your browser does not support folder selection. Please use Chrome, Edge, or a Chromium-based browser.';
-    }
-
     async function selectFolder() {
-      if (!isFileSystemSupported) {
-        alert('File System Access API not supported. Use Chrome or Edge on desktop.');
+      // Check if File System Access API is supported
+      if (!window.showDirectoryPicker) {
+        // Fallback for mobile devices
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.multiple = true;
+        input.accept = 'video/*';
+        input.webkitdirectory = true;
+        input.directory = true;
+        
+        input.onchange = async (e) => {
+          try {
+            elements.selectBtn.textContent = 'Loading...';
+            await processFiles(Array.from(e.target.files));
+            showVideoInterface();
+          } catch (err) {
+            alert('Error: ' + err.message);
+            elements.selectBtn.textContent = 'Select Folder';
+          }
+        };
+        
+        input.click();
         return;
       }
 
+      // Desktop: Use File System Access API
       try {
-        showLoading();
-        videoCount = 0;
-        totalVideos = 0;
-        allVideos = [];
-        
+        elements.selectBtn.textContent = 'Loading...';
         const dirHandle = await window.showDirectoryPicker();
-        
-        updateLoadingDetails('Counting videos...');
-        await countVideos(dirHandle);
-        totalVideos = videoCount;
-        videoCount = 0;
-        
-        updateLoadingDetails('Processing videos...');
         await scanDirectory(dirHandle);
-        
-        hideLoading();
-        
-        if (allVideos.length > 0) {
-          showVideoInterface();
-        } else {
-          alert('No video files found in the selected folder.');
-        }
+        showVideoInterface();
       } catch (err) {
-        hideLoading();
         if (err.name !== 'AbortError') {
-          console.error('Error:', err);
           alert('Error: ' + err.message);
         }
+        elements.selectBtn.textContent = 'Select Folder';
       }
-    }
-
-    async function countVideos(dirHandle) {
-      try {
-        for await (const entry of dirHandle.values()) {
-          if (entry.kind === 'directory') {
-            await countVideos(entry);
-          } else if (entry.kind === 'file') {
-            const file = await entry.getFile();
-            if (file.type.startsWith('video/')) {
-              videoCount++;
-              updateLoadingProgress();
-            }
-          }
-        }
-      } catch (err) {
-        console.error('Error counting:', err);
-      }
-    }
-
-    function showLoading() {
-      elements.loadingScreen.classList.add('active');
-      elements.selectBtn.disabled = true;
-    }
-
-    function hideLoading() {
-      elements.loadingScreen.classList.remove('active');
-      elements.selectBtn.disabled = false;
-    }
-
-    function updateLoadingProgress() {
-      const progress = totalVideos > 0 ? Math.round((videoCount / totalVideos) * 100) : 0;
-      elements.loadingProgress.textContent = progress + '%';
-      elements.loadingDetails.textContent = `Found ${videoCount} of ${totalVideos} videos`;
-    }
-
-    function updateLoadingDetails(text) {
-      elements.loadingDetails.textContent = text;
     }
 
     async function scanDirectory(dirHandle, categoryPath = '') {
       const videos = [];
       const cats = new Set();
+      let processedCount = 0;
 
-      try {
-        for await (const entry of dirHandle.values()) {
-          if (entry.kind === 'directory') {
-            const subCategory = categoryPath ? `${categoryPath}/${entry.name}` : entry.name;
-            cats.add(subCategory);
-            const subVideos = await scanDirectory(entry, subCategory);
-            videos.push(...subVideos);
-          } else if (entry.kind === 'file') {
-            const file = await entry.getFile();
-            if (file.type.startsWith('video/')) {
-              videoCount++;
-              updateLoadingProgress();
-              
-              videos.push({
-                name: file.name,
-                file: file,
-                url: URL.createObjectURL(file),
-                category: categoryPath || 'Uncategorized'
-              });
+      for await (const entry of dirHandle.values()) {
+        if (entry.kind === 'directory') {
+          const subCategory = categoryPath ? `${categoryPath}/${entry.name}` : entry.name;
+          cats.add(subCategory);
+          const subVideos = await scanDirectory(entry, subCategory);
+          videos.push(...subVideos);
+        } else if (entry.kind === 'file') {
+          const file = await entry.getFile();
+          if (file.type.startsWith('video/')) {
+            videos.push({
+              name: file.name,
+              file: file,
+              url: URL.createObjectURL(file),
+              category: categoryPath || 'Uncategorized'
+            });
+            
+            // Update progress for large datasets
+            processedCount++;
+            if (processedCount % 10 === 0 && categoryPath === '') {
+              elements.selectBtn.textContent = `Loading... (${processedCount} videos)`;
+              // Allow UI to update
+              await new Promise(resolve => setTimeout(resolve, 0));
             }
           }
         }
-      } catch (err) {
-        console.error('Error scanning:', err);
       }
 
       if (categoryPath === '') {
@@ -719,10 +620,49 @@
       return videos;
     }
 
+    // Fallback function for mobile devices
+    async function processFiles(files) {
+      const videos = [];
+      const cats = new Set();
+
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        
+        if (file.type.startsWith('video/')) {
+          // Extract category from file path
+          const pathParts = file.webkitRelativePath.split('/');
+          const category = pathParts.length > 2 
+            ? pathParts.slice(1, -1).join('/') 
+            : 'Uncategorized';
+          
+          cats.add(category);
+          
+          videos.push({
+            name: file.name,
+            file: file,
+            url: URL.createObjectURL(file),
+            category: category
+          });
+
+          // Update progress for large datasets
+          if (i % 10 === 0) {
+            elements.selectBtn.textContent = `Loading... (${i + 1}/${files.length})`;
+            // Allow UI to update
+            await new Promise(resolve => setTimeout(resolve, 0));
+          }
+        }
+      }
+
+      allVideos = videos;
+      categories = ['all', ...Array.from(cats).sort()];
+      renderCategories();
+      filterVideos();
+    }
+
     function renderCategories() {
       elements.categories.innerHTML = categories.map(cat => `
         <button class="category-btn ${cat === currentCategory ? 'active' : ''}" 
-                onclick="selectCategory('${cat.replace(/'/g, "\\'")}')">
+                onclick="selectCategory('${cat}')">
           ${cat === 'all' ? 'All Videos' : cat}
         </button>
       `).join('');
@@ -751,8 +691,47 @@
         return;
       }
 
-      elements.videoGrid.innerHTML = filteredVideos.map((video, index) => `
-        <div class="video-card" onclick="openModal(${index})">
+      // Virtualization for large datasets: render in batches
+      const batchSize = 50;
+      const initialBatch = filteredVideos.slice(0, batchSize);
+      
+      elements.videoGrid.innerHTML = initialBatch.map((video, index) => createVideoCard(video, index)).join('');
+      
+      // Load remaining videos progressively
+      if (filteredVideos.length > batchSize) {
+        setTimeout(() => {
+          let currentIndex = batchSize;
+          
+          const loadMore = () => {
+            if (currentIndex >= filteredVideos.length) return;
+            
+            const nextBatch = filteredVideos.slice(currentIndex, currentIndex + batchSize);
+            const fragment = document.createElement('div');
+            fragment.innerHTML = nextBatch.map((video, idx) => 
+              createVideoCard(video, currentIndex + idx)
+            ).join('');
+            
+            while (fragment.firstChild) {
+              elements.videoGrid.appendChild(fragment.firstChild);
+            }
+            
+            currentIndex += batchSize;
+            
+            if (currentIndex < filteredVideos.length) {
+              setTimeout(loadMore, 100);
+            }
+          };
+          
+          loadMore();
+        }, 100);
+      }
+    }
+
+    function createVideoCard(video, index) {
+      return `
+        <div class="video-card" onclick="openModal(${index})" 
+             onmouseenter="playPreview(this, '${video.url}')"
+             onmouseleave="stopPreview(this)">
           <div class="video-thumbnail">
             <video preload="metadata" muted loop>
               <source src="${video.url}#t=0.1" type="${video.file.type}">
@@ -766,7 +745,18 @@
             <span class="video-category">${video.category}</span>
           </div>
         </div>
-      `).join('');
+      `;
+    }
+
+    function playPreview(card, url) {
+      const video = card.querySelector('video');
+      video.currentTime = 0;
+      video.play().catch(() => {});
+    }
+
+    function stopPreview(card) {
+      const video = card.querySelector('video');
+      video.pause();
     }
 
     function openModal(index) {
@@ -784,7 +774,7 @@
       }
       
       elements.modal.classList.add('active');
-      elements.modalVideo.play().catch(() => {});
+      elements.modalVideo.play();
     }
 
     function closeModal() {
@@ -821,28 +811,6 @@
         else if (e.key === 'ArrowRight') navigateVideo(1);
       }
     });
-
-    let touchStartX = 0;
-    let touchEndX = 0;
-
-    elements.modal.addEventListener('touchstart', (e) => {
-      touchStartX = e.changedTouches[0].screenX;
-    }, { passive: true });
-
-    elements.modal.addEventListener('touchend', (e) => {
-      touchEndX = e.changedTouches[0].screenX;
-      const diff = touchStartX - touchEndX;
-      if (Math.abs(diff) > 50) {
-        if (diff > 0) navigateVideo(1);
-        else navigateVideo(-1);
-      }
-    }, { passive: true });
-
-    const observer = new MutationObserver(() => {
-      document.body.style.overflow = elements.modal.classList.contains('active') ? 'hidden' : '';
-    });
-
-    observer.observe(elements.modal, { attributes: true, attributeFilter: ['class'] });
   </script>
 </body>
 </html>
